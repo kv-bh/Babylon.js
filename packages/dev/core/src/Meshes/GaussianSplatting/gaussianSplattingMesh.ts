@@ -2519,4 +2519,12 @@ export class GaussianSplattingMesh extends Mesh {
 
         return this;
     }
+
+    /**
+     * Removes any data that was kept in RAM during the data update process.
+     */
+    public removeRamData(): void {
+        this._splatsData = null;
+        this._shData = null;
+    }
 }
