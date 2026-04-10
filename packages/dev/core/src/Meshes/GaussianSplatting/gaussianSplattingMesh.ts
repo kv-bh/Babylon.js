@@ -322,7 +322,7 @@ export class GaussianSplattingMesh extends Mesh {
     private _partVisibility: number[] = [];
     private _partProxies: Map<number, GaussianSplattingPartProxyMesh> = new Map();
     private _textureSize: Vector2 = new Vector2(0, 0);
-    private readonly _keepInRam: boolean = false;
+    private _keepInRam: boolean = false;
 
     private _delayedTextureUpdate: Nullable<IDelayedTextureUpdate> = null;
     private _useRGBACovariants = false;
@@ -510,6 +510,19 @@ export class GaussianSplattingMesh extends Mesh {
         return this._material;
     }
 
+    /**
+     * Keep data in RAM for editing purposes.
+     */
+    public get keepInRam() {
+        return this._keepInRam;
+    }
+    public set keepInRam(value: boolean) {
+        this._keepInRam = value;
+        if (!value) {
+            this.removeRamData();
+        }
+    }
+
     private static _MakeSplatGeometryForMesh(mesh: Mesh): void {
         const vertexData = new VertexData();
         const originPositions = [-2, -2, 0, 2, -2, 0, 2, 2, 0, -2, 2, 0];
@@ -538,7 +551,7 @@ export class GaussianSplattingMesh extends Mesh {
      * @param name defines the name of the mesh
      * @param url defines the url to load from (optional)
      * @param scene defines the hosting scene (optional)
-     * @param keepInRam keep datas in ram for editing purpose
+     * @param keepInRam keep data in RAM for editing purposes
      */
     constructor(name: string, url: Nullable<string> = null, scene: Nullable<Scene> = null, keepInRam: boolean = false) {
         super(name, scene);
